@@ -1,17 +1,17 @@
 from django.shortcuts import render
 
-# Create your views here.
-def main():
-    return None
+
+def main(request):
+    return render(request, 'index.html')
 
 
-def category():
-    return None
+def category(request):
+    return render(request, 'shop.html')
 
 
-def product():
-    return None
+def product(request):
+    return render(request, 'shop-detail.html')
 
 
-def contact():
-    return None
+def contact(request):
+    return render(request, 'contact.html')
