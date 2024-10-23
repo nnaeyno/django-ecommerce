@@ -7,6 +7,7 @@ class Category(MPTTModel):
     title = models.CharField(max_length=100)
     category_id = models.AutoField(primary_key=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.title
@@ -19,6 +20,10 @@ class Category(MPTTModel):
         verbose_name_plural = 'Categories'
 
 
+class ProductTags(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -29,6 +34,7 @@ class Product(models.Model):
     product_image = models.ImageField(upload_to="store/product_images/")
     quantity = models.IntegerField()
     is_available = models.BooleanField(default=True)
+    tag = models.ManyToManyField(ProductTags)
 
     def __str__(self):
         return self.name
@@ -36,3 +42,4 @@ class Product(models.Model):
     @property
     def overall_worth(self):
         return self.price * self.quantity
+
