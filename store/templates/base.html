@@ -69,12 +69,12 @@
                             <a href="{% url 'product' slug='test' %}" class="nav-item nav-link">Shop Detail</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="{% url 'order_app:cart' %}" class="dropdown-item">Cart</a>
-                                    <a href="{% url 'order_app:checkout' %}" class="dropdown-item">Chackout</a>
-                                    <a href="{% url 'testimonial' %}" class="dropdown-item">Testimonial</a>
-                                    <a href="{% url 'error' %}" class="dropdown-item">404 Page</a>
-                                </div>
+                                 <!-- Parent categories dropdown items -->
+                                {% for parent_category in parent_categories %}
+                                    <a href="{% url 'category_slug' parent_category.slug %}" class="dropdown-item">{{ parent_category.title }}</a>
+                                {% empty %}
+                                    <p class="dropdown-item">No categories found</p>
+                                {% endfor %}
                             </div>
                             <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
                         </div>

@@ -1,6 +1,8 @@
 from django.db import models
+from django.utils.text import slugify
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib import admin
+from versatileimagefield.fields import VersatileImageField
 
 
 class Category(MPTTModel):
@@ -19,6 +21,11 @@ class Category(MPTTModel):
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
 
 class ProductTags(models.Model):
     name = models.CharField(max_length=100)
@@ -31,7 +38,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     categories = models.ManyToManyField(Category)
     product_id = models.AutoField(primary_key=True)
-    product_image = models.ImageField(upload_to="store/product_images/")
+    product_image = VersatileImageField('Image', upload_to="store/product_images/")
     quantity = models.IntegerField()
     is_available = models.BooleanField(default=True)
     tag = models.ManyToManyField(ProductTags)
@@ -42,4 +49,3 @@ class Product(models.Model):
     @property
     def overall_worth(self):
         return self.price * self.quantity
-
