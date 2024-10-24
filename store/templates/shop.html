@@ -150,17 +150,24 @@ Shop
                                     <p>No products found.</p>
                                     {% endfor %}
                                     <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            <a href="#" class="rounded">&laquo;</a>
-                                            <a href="#" class="active rounded">1</a>
-                                            <a href="#" class="rounded">2</a>
-                                            <a href="#" class="rounded">3</a>
-                                            <a href="#" class="rounded">4</a>
-                                            <a href="#" class="rounded">5</a>
-                                            <a href="#" class="rounded">6</a>
-                                            <a href="#" class="rounded">&raquo;</a>
-                                        </div>
-                                    </div>
+    <div class="pagination d-flex justify-content-center mt-5">
+        {% if products.has_previous %}
+            <a href="?page={{ products.previous_page_number }}" class="rounded">&laquo;</a>
+        {% endif %}
+
+        {% for page_num in products.paginator.page_range %}
+            {% if products.number == page_num %}
+                <a href="?page={{ page_num }}" class="active rounded">{{ page_num }}</a>
+            {% else %}
+                <a href="?page={{ page_num }}" class="rounded">{{ page_num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}" class="rounded">&raquo;</a>
+        {% endif %}
+    </div>
+</div>
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -13,6 +14,7 @@ def main(request):
 
 
 def category(request, slug=None):
+
     sort_by = request.GET.get('sort')
     if slug:
         selected_category = get_object_or_404(Category, slug=slug)
@@ -28,6 +30,11 @@ def category(request, slug=None):
     context = search(request, products, selected_category, subcategories, sort_by)
     context = filter_tags(request, products, context)
     context = price_filtering(request, context.get('products', products), context)
+    products = context.get('products', products)
+    paginator = Paginator(products, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context['products'] = page_obj
     return render(request, 'shop.html', context)
 
 
