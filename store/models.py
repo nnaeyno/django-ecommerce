@@ -30,6 +30,13 @@ class Category(MPTTModel):
 class ProductTags(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Product Tag'
+        verbose_name_plural = 'Product Tags'
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100)

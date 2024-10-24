@@ -1,4 +1,4 @@
-from store.models import Category, Product
+from store.models import Category, ProductTags
 
 
 def parent_categories(request):
@@ -7,5 +7,5 @@ def parent_categories(request):
 
 
 def product_tags(request):
-    tags = Product.objects.all()
+    tags = ProductTags.objects.all()
     return {'product_tags': tags}

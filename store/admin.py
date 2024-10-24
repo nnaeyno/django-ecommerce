@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from store.models import Category, Product
+from store.models import Category, Product, ProductTags
 
 
 @admin.register(Category)
@@ -33,3 +33,9 @@ class ProductAdmin(admin.ModelAdmin):
         return ", ".join([category.title for category in obj.categories.all()])
 
     get_categories.short_description = 'Categories'
+
+
+@admin.register(ProductTags)
+class TagAdmin(admin.ModelAdmin):
+    list_filter = ('name',)
+    search_fields = ('name',)
