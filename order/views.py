@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.views.generic import TemplateView, FormView
 
 from order.models import Cart, Entry
 from django.contrib.auth.decorators import login_required
@@ -14,13 +15,22 @@ from django.views import View
 from django.urls import reverse
 
 
-# Create your views here.
-def cart(request):
-    return render(request, 'cart.html')
+class CartView(LoginRequiredMixin, TemplateView):
+    template_name = 'cart.html'
+    model = Cart
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
-def checkout(request):
-    return render(request, 'checkout.html')
+class CheckoutView(LoginRequiredMixin, TemplateView):
+    template_name = 'checkout.html'
+    model = Cart
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class AddToCartView(LoginRequiredMixin, View):
@@ -45,17 +55,14 @@ class AddToCartView(LoginRequiredMixin, View):
             messages.error(request, f'Sorry, "{product.name}" is out of stock.')
             return redirect(self.get_error_url())
 
-        # Get or create cart for user
         cart, created = Cart.objects.get_or_create(user=request.user)
 
-        # Get or create cart entry
         entry, created = Entry.objects.get_or_create(
             cart=cart,
             product=product,
             defaults={'quantity': 0}
         )
 
-        # Validate available quantity
         if product.quantity < (entry.quantity + 1):
             messages.error(
                 request,
@@ -63,11 +70,9 @@ class AddToCartView(LoginRequiredMixin, View):
             )
             return redirect(self.get_error_url())
 
-        # Update entry quantity
         entry.quantity += 1
         entry.save()
 
-        # Update cart totals
         cart.count = Entry.objects.filter(cart=cart).count()
         cart.total = sum(
             entry.product.price * entry.quantity
@@ -77,3 +82,36 @@ class AddToCartView(LoginRequiredMixin, View):
 
         messages.success(request, f'Added "{product.name}" to your cart.')
         return redirect(self.get_success_url())
+
+
+# Cart.html is still static as homework requirements didn't specify
+# to change that page, this is only a backend logic that isn't attached to front
+class RemoveFromCartView(LoginRequiredMixin, View):
+    """
+    Class-based view to remove a product from cart
+    """
+
+    def get_success_url(self):
+        return self.request.META.get('HTTP_REFERER', reverse('cart'))
+
+    def post(self, request, product_id, *args, **kwargs):
+        cart = get_object_or_404(Cart, user=request.user)
+        entry = get_object_or_404(Entry, cart=cart, product_id=product_id)
+
+        product_name = entry.product.name
+
+        # Delete the entry
+        entry.delete()
+
+        cart.count = Entry.objects.filter(cart=cart).count()
+        cart.total = sum(
+            entry.product.price * entry.quantity
+            for entry in Entry.objects.filter(cart=cart)
+        )
+        cart.save()
+
+        messages.success(request, f'Removed "{product_name}" from your cart.')
+        return redirect(self.get_success_url())
+
+    def get(self, request, *args, **kwargs):
+        return redirect('cart')
