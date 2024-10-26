@@ -69,7 +69,6 @@ TEMPLATES = [
                 'store.context_processors.parent_categories',
                 'store.context_processors.product_tags',
                 'order.context_processors.cart_count',
-                #'store.context_processors.cart_count',
 
             ],
         },

@@ -1,10 +1,7 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
-from django.views.generic import TemplateView, FormView
+
+from django.views.generic import TemplateView
 
 from order.models import Cart, Entry
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 
 from store.models import Product
 
