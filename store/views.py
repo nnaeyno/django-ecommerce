@@ -1,17 +1,23 @@
-
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView, DetailView, FormView, TemplateView
 
 from store.models import Category, Product, ProductTags
 
 
-def main(request):
-    return render(request, 'index.html')
+class HomeView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        pass
 
 
 def category(request, slug=None):
-
     sort_by = request.GET.get('sort')
     if slug:
         selected_category = get_object_or_404(Category, slug=slug)
@@ -75,20 +81,44 @@ def search(request, products, selected_category, subcategories, sort_by):
     return context
 
 
-def product(request, slug):
-    return render(request, 'shop-detail.html')
+# thw shop detail page will be static as requirements didn't specify that we had to do this dynamically now
+class ProductDetail(DetailView):
+    model = Product
+    template_name = 'shop-detail.html'
+
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.object = None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
-def contact(request):
-    return render(request, 'contact.html')
+class Contact(FormView):
+    template_name: str = "contact.html"
+    success_url = "..."
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(Contact, self).get_context_data(**kwargs)
+        return context
 
 
-def error(request):
-    return render(request, '404.html')
+class Error(TemplateView):
+    template_name = '404.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
-def testimonial(request):
-    return render(request, 'testimonial.html')
+class Testimonial(TemplateView):
+    template_name = 'testimonial.html'
 
-
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

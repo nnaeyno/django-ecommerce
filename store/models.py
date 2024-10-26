@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.utils.text import slugify
 from mptt.models import MPTTModel, TreeForeignKey
@@ -49,6 +51,7 @@ class Product(models.Model):
     quantity = models.IntegerField()
     is_available = models.BooleanField(default=True)
     tag = models.ManyToManyField(ProductTags)
+    slug = models.SlugField(unique=True,  default=uuid.uuid1)
 
     def __str__(self):
         return self.name
@@ -56,3 +59,8 @@ class Product(models.Model):
     @property
     def overall_worth(self):
         return self.price * self.quantity
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
