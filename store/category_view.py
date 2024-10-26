@@ -81,7 +81,7 @@ class FilterMixin:
     def apply_sorting(self, queryset: QuerySet, sort_by: Optional[str]) -> QuerySet:
         sort_options = {
             'date_newest': '-created_at',
-            'price_low': 'price',
+            'price_lowest': 'price',
             'price_high': '-price',
             'name_asc': 'name',
             'name_desc': '-name',

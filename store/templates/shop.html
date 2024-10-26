@@ -43,6 +43,7 @@ Shop
                                     <select name="sort" class="border-0 form-select-sm bg-light me-3" onchange="this.form.submit()">
                                         <option value="" {% if not selected_sort %}selected{% endif %}>Nothing</option>
                                         <option value="date_newest" {% if selected_sort == 'date_newest' %} selected{% endif %}>Newest First</option>
+                                        <option value="price_lowest" {% if selected_sort == 'price_lowest' %} selected{% endif %}>Lowest Price</option>
                                     </select>
                                 </form>
                                 </div>
