@@ -1,9 +1,6 @@
-from django.core.paginator import Paginator
-from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, FormView, TemplateView
+from django.views.generic import DetailView, TemplateView
 
-from store.models import Category, Product, ProductTags
+from store.models import Product
 
 
 # the shop detail page will be static as requirements didn't specify that we had to do this dynamically now
@@ -31,16 +28,11 @@ class HomeView(TemplateView):
         pass
 
 
-class Contact(FormView):
-    template_name: str = "contact.html"
-    success_url = "..."
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+class Contact(TemplateView):
+    template_name = "contact.html"
 
     def get_context_data(self, **kwargs):
-        context = super(Contact, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         return context
 
 
