@@ -54,8 +54,15 @@ class CategoryQuerySetMixin:
 
 class FilterMixin:
     """Mixin for filtering products"""
+    sort_options = {
+        'date_newest': '-created_at',
+        'price_lowest': 'price',
+        'price_high': '-price',
+        'name_asc': 'name',
+        'name_desc': '-name',
+    }
 
-    # IDE suggests this should be static, so I think there might be a better solution for this
+    # IDE suggests these should be static, so I think there might be a better solution for this
     def apply_search(self, queryset: QuerySet, query: str) -> QuerySet:
         if not query:
             return queryset
@@ -79,14 +86,8 @@ class FilterMixin:
         return queryset
 
     def apply_sorting(self, queryset: QuerySet, sort_by: Optional[str]) -> QuerySet:
-        sort_options = {
-            'date_newest': '-created_at',
-            'price_lowest': 'price',
-            'price_high': '-price',
-            'name_asc': 'name',
-            'name_desc': '-name',
-        }
-        return queryset.order_by(sort_options.get(sort_by, '-created_at'))
+
+        return queryset.order_by(self.sort_options.get(sort_by, '-created_at'))
 
 
 class CustomPaginator(Paginator):
@@ -146,6 +147,7 @@ class CategoryView(PaginatedListView, ProductQuerySetMixin, CategoryQuerySetMixi
     template_name = 'shop.html'
     context_object_name = 'products'
     paginate_by = 9
+    category = None
 
     def get_queryset(self) -> QuerySet:
         """Get filtered and sorted product queryset"""
