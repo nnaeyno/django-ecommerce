@@ -133,7 +133,7 @@ Shop
                                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                                     <p class="text-dark fs-5 fw-bold mb-0">{{ product.price }} $</p>
                                                     {% if product.quantity > 0 %}
-                                                        <a href="{% url 'order:add_to_cart' product.product_id %}"
+                                                        <a href="{% url 'order_app:add_to_cart' product.product_id %}"
                                                            class="btn border border-secondary rounded-pill px-3 text-primary">
                                                             <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
                                                         </a>
