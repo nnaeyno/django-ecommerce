@@ -8,7 +8,7 @@
             <input type="hidden" name="next" value="{{ request.GET.next }}">
         {% endif %}
         {{ form.as_p }}
-        <button type="submit">Login</button>
+        <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 rounded-pill text-white">Login</button>
     </form>
     <p>Don't have an account? <a href="{% url 'users:register' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Register here</a></p>
 </div>
