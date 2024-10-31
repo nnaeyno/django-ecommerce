@@ -125,9 +125,11 @@ Shop
                                     {% for product in products %}
                                     <div class="col-md-6 col-lg-6 col-xl-4">
                                         <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img">
-                                                <img src="{{ product.product_image.crop.306x214 }}" class="img-fluid w-100 rounded-top" alt="">
-                                            </div>
+                                            <a href="{% url 'store:product' product.slug %}">
+                                                <div class="fruite-img">
+                                                    <img src="{{ product.product_image.crop.306x214 }}" class="img-fluid w-100 rounded-top" alt="{{ product.name }}">
+                                                </div>
+                                            </a>
                                              <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
                                                 {% for category in product.categories.all %}
                                                     {% with parent_category=category.get_parents|last %}

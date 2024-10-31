@@ -7,10 +7,10 @@ from store.models import Product
 class ProductDetail(DetailView):
     model = Product
     template_name = 'shop-detail.html'
+    context_object_name = 'product'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
-        self.object = None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
