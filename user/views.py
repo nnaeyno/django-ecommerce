@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.shortcuts import redirect
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.contrib.auth.views import LogoutView
+from django.urls import reverse_lazy
+from django.contrib import messages
 
 from .forms import UserRegistrationForm
 
@@ -13,6 +15,11 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('store:main')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('users:login')
 
 
 class UserRegistrationView(CreateView):
@@ -34,8 +41,6 @@ class UserRegistrationView(CreateView):
         if self.request.user.is_authenticated:
             return redirect('store:main')
         return super().get(*args, **kwargs)
-
-
 
 # def register(request):
 #     if request.method == 'POST':
