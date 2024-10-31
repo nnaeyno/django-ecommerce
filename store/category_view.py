@@ -1,6 +1,7 @@
+from django.db.models import Q, QuerySet
 from django.shortcuts import get_object_or_404
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from typing import Optional
+from typing import Optional, List
 from dataclasses import dataclass
 from django.db.models.query import QuerySet
 from store.models import Category, Product, ProductTags
@@ -63,17 +64,14 @@ class FilterMixin:
     }
 
     # IDE suggests these should be static, so I think there might be a better solution for this
-    def apply_search(self, queryset: QuerySet, query: str) -> QuerySet:
+    def apply_search(self, queryset: QuerySet, query: str):
         if not query:
             return queryset
 
-        search_vector = SearchVector('name', weight='A') + \
-                        SearchVector('description', weight='B')
-        search_query = SearchQuery(query)
-
-        return queryset.annotate(
-            rank=SearchRank(search_vector, search_query)
-        ).filter(rank__gte=0.3).order_by('-rank')
+        return queryset.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query)
+        )
 
     def apply_price_filter(self, queryset: QuerySet, price: Optional[int]) -> QuerySet:
         if price and price.isdigit():
