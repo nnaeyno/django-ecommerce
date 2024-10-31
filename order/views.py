@@ -34,6 +34,11 @@ class AddToCartView(LoginRequiredMixin, View):
     """
     Class-based view to add a product to cart with quantity validation
     """
+    login_url = 'users:login'
+    redirect_field_name = 'next'
+
+    def get_login_url(self):
+        return f"{reverse(self.login_url)}?next={self.request.path}"
 
     def get_error_url(self):
         return self.request.META.get('HTTP_REFERER', reverse('error'))

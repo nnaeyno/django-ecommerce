@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'users:register' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Register here</a></p>
+</div>
+{% endblock %}

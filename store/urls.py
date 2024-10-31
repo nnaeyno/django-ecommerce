@@ -3,7 +3,7 @@ from . import views
 from .category_view import CategoryView
 from .views import ProductDetail, Contact, Error, Testimonial, HomeView
 
-
+app_name = 'store'
 
 
 urlpatterns = [

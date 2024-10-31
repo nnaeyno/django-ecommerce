@@ -23,7 +23,7 @@ from django.conf import settings
 
 urlpatterns = [
     path("", lambda request: HttpResponse("Default page")),
-    path("admin/", admin.site.urls),
+    # path("admin/", admin.site.urls),
     path("store/", include("store.urls")),
     path("order/", include("order.urls")),
 ]

@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
-
+from user.models import User
 from store.models import Product
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Cart(models.Model):
@@ -13,6 +16,11 @@ class Cart(models.Model):
 
     def __str__(self):
         return "User: {} has {} items in their cart. Their total is ${}".format(self.user, self.count, self.total)
+
+    @receiver(post_save, sender=User)
+    def create_user_cart(sender, instance, created, **kwargs):
+        if created:
+            Cart.objects.create(user=instance)
 
 
 class Entry(models.Model):
