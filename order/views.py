@@ -41,10 +41,10 @@ class AddToCartView(LoginRequiredMixin, View):
         return f"{reverse(self.login_url)}?next={self.request.path}"
 
     def get_error_url(self):
-        return self.request.META.get('HTTP_REFERER', reverse('error'))
+        return self.request.META.get('HTTP_REFERER', reverse('store:error'))
 
     def get_success_url(self):
-        return self.request.META.get('HTTP_REFERER', reverse('category'))
+        return self.request.META.get('HTTP_REFERER', reverse('store:category'))
 
     def get(self, request, *args, **kwargs):
         return redirect('category')
@@ -94,7 +94,7 @@ class RemoveFromCartView(LoginRequiredMixin, View):
     """
 
     def get_success_url(self):
-        return self.request.META.get('HTTP_REFERER', reverse('cart'))
+        return self.request.META.get('HTTP_REFERER', reverse('order_app:cart'))
 
     def post(self, request, product_id, *args, **kwargs):
         cart = get_object_or_404(Cart, user=request.user)

@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     count = models.PositiveIntegerField(default=0)
     total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     updated = models.DateTimeField(auto_now=True)
@@ -16,11 +16,6 @@ class Cart(models.Model):
 
     def __str__(self):
         return "User: {} has {} items in their cart. Their total is ${}".format(self.user, self.count, self.total)
-
-    @receiver(post_save, sender=User)
-    def create_user_cart(sender, instance, created, **kwargs):
-        if created:
-            Cart.objects.create(user=instance)
 
 
 class Entry(models.Model):

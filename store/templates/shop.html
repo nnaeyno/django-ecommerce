@@ -60,7 +60,7 @@ Shop
                                                 {% for sub_category in subcategories %}
                                                 <li>
                                                     <div class="d-flex justify-content-between fruite-name">
-                                                        <a href="{% url 'category' sub_category.slug %}"><i class="fas fa-apple-alt me-2"></i>{{sub_category.title}}</a>
+                                                        <a href="{% url 'store:category' sub_category.slug %}"><i class="fas fa-apple-alt me-2"></i>{{sub_category.title}}</a>
                                                     </div>
                                                 </li>
                                                 {% empty %}
