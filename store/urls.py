@@ -1,7 +1,10 @@
 from django.urls import path
-from . import views
+from . import views, error_views
 from .category_view import CategoryView
-from .views import ProductDetail, Contact, Error, Testimonial, HomeView
+from .views import ProductDetail, Contact, Testimonial, HomeView
+
+handler404 = 'store.error_views.error_404'
+handler500 = 'store.error_views.error_500'
 
 app_name = 'store'
 
@@ -12,7 +15,7 @@ urlpatterns = [
     path('category/<slug:slug>/', CategoryView.as_view(), name="category"),
     path('product/<slug:slug>/', ProductDetail.as_view(), name="product"),
     path('contact/', Contact.as_view(), name="contact"),
-    path('error/', Error.as_view(), name="error"),
+    path('error/', error_views.error_404, name="error"),
     path('testimonial/', Testimonial.as_view(), name="testimonial"),
 ]
 

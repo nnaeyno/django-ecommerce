@@ -11,7 +11,6 @@ class ProductDetail(DetailView):
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
@@ -30,14 +29,6 @@ class HomeView(TemplateView):
 
 class Contact(TemplateView):
     template_name = "contact.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-
-class Error(TemplateView):
-    template_name = '404.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

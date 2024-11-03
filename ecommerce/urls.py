@@ -21,6 +21,10 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+
+handler404 = 'store.error_views.error_404'
+handler500 = 'store.error_views.error_500'
+
 urlpatterns = [
     path("", lambda request: HttpResponse("Default page")),
     path("admin/", admin.site.urls),
