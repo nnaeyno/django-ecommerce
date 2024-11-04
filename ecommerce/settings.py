@@ -22,13 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-$$m5#x+5_8*-m6dns1am#k4=1=&i2izmzve=1)23)apt^&bite"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-# DEBUG = False  # new
+# DEBUG = True
 #
-# ALLOWED_HOSTS = ["*"]  # new
+# ALLOWED_HOSTS = []
+
+DEBUG = False  # new
+
+ALLOWED_HOSTS = ["*"]  # new
 
 # Application definition
 
@@ -134,6 +134,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
