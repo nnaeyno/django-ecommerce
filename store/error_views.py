@@ -12,6 +12,6 @@ def error_404(request, exception):
 def error_500(request):
     context = {
                'error_code': 500,
-               'error_message': 'Service Error',
+               'error_message': 'Server Error',
                }
     return render(request, '404.html', status=500, context=context)
