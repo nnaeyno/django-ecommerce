@@ -42,6 +42,8 @@
 
 
         <!-- Navbar start -->
+        {% load cache %}
+        {% cache 600 'site_header' request.user %}
         <div class="container-fluid fixed-top">
             <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
@@ -56,7 +58,9 @@
                     </div>
                 </div>
             </div>
+            {% endcache %}
             <div class="container px-0">
+                {% cache 600 'nav_bar' %}
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
                     <a href="{% url 'store:main' %}" class="navbar-brand"><h1 class="text-primary display-6">Fruitables</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -79,8 +83,11 @@
                             </div>
                             <a href="{% url 'store:contact' %}" class="nav-item nav-link">Contact</a>
                         </div>
+                        {% endcache %}
                         <div class="d-flex m-3 me-0">
+                             {% cache 600 'search_button' %}
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            {% endcache %}
                             <a href="#" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
@@ -100,6 +107,7 @@
 
 
         <!-- Modal Search Start -->
+        {% cache 600 'search_modal' %}
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content rounded-0">
@@ -118,6 +126,7 @@
                 </div>
             </div>
         </div>
+        {% endcache %}
         <!-- Modal Search End -->
          {% block header %}
         <!-- Single Page Header start -->
